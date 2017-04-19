@@ -91,7 +91,7 @@ def main():
             if text.find(triggerWord)>-1:
                 if (args.debug):
                     print ('date: %s' % datetime.datetime.fromtimestamp(int(wallItem.get('date'))).strftime('%Y-%m-%d %H:%M:%S'))
-                    print ('post: %s \n' % wallItem.get('text'))
+                    print ('post: %s \n' % wallItem.get('text').encode('utf-8'))
                 checkUpdateCacheNotify(wallItem.get('text'), storagePath, config, args.debug)                
                 break
 
