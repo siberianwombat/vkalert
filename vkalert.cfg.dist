@@ -1,0 +1,14 @@
+[vk]
+login=login@domain.com
+password=securePassword
+count=50
+[trigger]
+keywords="инет,интернет,кб авиа,тариф,лагает,мегабит,мб"
+[cache]
+type=file
+storage=/tmp/vkalert
+[slack]
+notify=yes
+username=vk.com
+channel=users
+webhook_url=https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
