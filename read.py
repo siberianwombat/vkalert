@@ -63,7 +63,7 @@ def main():
     config = ConfigParser.ConfigParser()
 
     # @todo add defaults
-    config.read([os.path.dirname(__file__) + 'vkalert.cfg'])
+    config.read([os.path.dirname(__file__) + '/vkalert.cfg'])
     triggerWords = config.get('trigger', 'keywords').split(',')
     storagePath = config.get('cache', 'storage')
     
