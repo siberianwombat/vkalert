@@ -69,8 +69,23 @@ def main():
     
     vkLogin = config.get('vk', 'login')
     vkPassword = config.get('vk', 'password')
-    
+        
     vk_session = vk_api.VkApi(login = vkLogin, password = vkPassword)
+
+    try:
+        proxy = config.get('vk', 'proxy')
+        if (args.debug):
+            print('applying proxy settings: %s \n' % proxy)
+        vk_session.http.proxies = {
+            'http': 'http://' + proxy,
+            'https': 'https://' + proxy,
+        }
+    except ConfigParser.NoOptionError:
+        if (args.debug):
+            print('no proxy settings, trying direct connection\n')
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
+        return
 
     try:
         vk_session.auth()

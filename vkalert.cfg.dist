@@ -2,6 +2,7 @@
 login=login@domain.com
 password=securePassword
 count=50
+proxy=<username:password@>ip:port
 [trigger]
 keywords=инет,интернет,кб авиа,тариф,лагает,мегабит,мб
 [cache]
