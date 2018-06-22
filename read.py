@@ -26,8 +26,9 @@ def storeCache(md5hash, text, path, debug):
         fhandle.close()
     return True;    
 
-def slackNotify(text, config, debug):
-    slack_data = {'text': text, 'channel': config.get('slack', 'channel'), 'username': config.get('slack', 'username'), 'icon_emoji': ':scream_cat:' }
+def slackNotify(postid, text, config, debug):
+    posturl = '%s_%d' % (config.get('vk', 'baseurl'), postid)
+    slack_data = {'text': text, 'channel': config.get('slack', 'channel'), 'username': config.get('slack', 'username'), 'icon_emoji': ':scream_cat:', 'attachments':[{'fallback':'Reply icon', 'actions':[{'type':'button','text':'Reply','url': posturl}]}] }
     response = requests.post(
         config.get('slack', 'webhook_url'), data=json.dumps(slack_data),
         headers={'Content-Type': 'application/json'}
@@ -41,10 +42,10 @@ def slackNotify(text, config, debug):
         print ('slack: sent')
     return True;
 
-def checkUpdateCacheNotify(text, path, config, debug):
+def checkUpdateCacheNotify(postid, text, path, config, debug):
     md5hash = md5.new(text).hexdigest()
     if (not checkCache(md5hash, path, debug)):
-        if slackNotify(text, config, debug  ):
+        if slackNotify(postid, text, config, debug):
             if (debug):
                 print ('slack: notifying')
             storeCache(md5hash, text, path, debug)
@@ -108,7 +109,8 @@ def main():
                     print ('word found: %s \n' % triggerWord)
                     print ('date: %s' % datetime.datetime.fromtimestamp(int(wallItem.get('date'))).strftime('%Y-%m-%d %H:%M:%S'))
                     print ('post: %s \n' % wallItem.get('text').encode('utf-8'))
-                checkUpdateCacheNotify(wallItem.get('text'), storagePath, config, args.debug)                
+                    print ('post_id: %d \n' % wallItem.get('post_id'))
+                checkUpdateCacheNotify(wallItem.get('post_id'), wallItem.get('text'), storagePath, config, args.debug)
                 break
 
     if (args.debug):
